@@ -1,0 +1,3 @@
+echo "Привет, мир!" | tee -a output.txt && cat output.txt
+
+grep -w "error" /var/log/syslog | head -n 5
