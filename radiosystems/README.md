@@ -29,7 +29,7 @@ log path: /var/log/app
 
 ``python3 wordsearch.py -f ~/config.txt -w path``
 
-```
+```python
 import argparse
 import sys
 
