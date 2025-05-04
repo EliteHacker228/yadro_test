@@ -6,12 +6,16 @@
 Печатает строку "Hello, DevOps!", записывает её в файл hello.txt в домашней директории, и выводит содержимое 
 файла на экран.
 
-`echo "Привет, мир!" | tee -a output.txt && cat output.txt`
+```sh
+echo "Привет, мир!" | tee -a output.txt && cat output.txt
+```
 
 #### 3. Linux команда для вывода строк из логов
 Выводит первые 5 строк со словом "error" из /var/log/syslog
 
-`grep -w "error" /var/log/syslog | head -n 5`
+```sh
+grep -w "error" /var/log/syslog | head -n 5
+```
 
 #### 4. Bash/python-скрипт
 
