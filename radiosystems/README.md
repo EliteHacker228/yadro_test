@@ -85,10 +85,8 @@ RUN chmod +x /tmp/extract_path_value.py
 
 ```Dockerfile
 FROM ubuntu:latest
-RUN apt-get update
-RUN apt-get install -y wget && \
-    apt-get install -y python3 && \
-    apt-get install -y python3-pip && \
+RUN apt-get update && \
+    apt-get install -y wget python3 python3-pip && \
     apt-get clean
 COPY search_path.sh /tmp/search_path.sh
 COPY extract_path_value.py /tmp/extract_path_value.py
