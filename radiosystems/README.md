@@ -54,6 +54,7 @@ try:
             if search_word in line:
                 print(line, end='')
         print('')
+        sys.exit(0)
 except FileNotFoundError:
     print(f'ERROR: file {file_path} not found')
     sys.exit(1)
