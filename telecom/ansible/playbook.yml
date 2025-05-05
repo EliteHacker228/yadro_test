@@ -1,0 +1,96 @@
+- name: Install Docker
+  hosts: localhost
+  become: true
+  vars_files:
+    - secrets.yml
+  tasks:
+    - name: Update APT cache
+      ansible.builtin.apt:
+        update_cache: yes
+
+    - name: Install Docker package
+      ansible.builtin.apt:
+        name: docker.io
+        state: present
+
+    - name: Get current user
+      ansible.builtin.command: whoami
+      register: current_user
+      changed_when: false
+
+    - name: Add user to Docker group
+      ansible.builtin.user:
+        name: "{{ current_user.stdout }}"
+        group: docker
+        append: yes
+
+    - name: Restart Docker service to apply group changes
+      ansible.builtin.systemd:
+        name: docker
+        state: restarted
+        enabled: yes
+
+    - name: Check Docker installation
+      ansible.builtin.command: docker --version
+      register: docker_version
+
+    - name: Output Docker version
+      debug:
+        msg: "Docker is installed and has version {{ docker_version.stdout }}"
+
+    - name: Enable Docker service
+      ansible.builtin.systemd:
+        name: docker
+        enabled: yes
+        state: started
+
+- name: Download and build Docker image
+  hosts: localhost
+  vars_files:
+    - secrets.yml
+  tasks:
+    - name: Install Git
+      become: true
+      ansible.builtin.apt:
+        name: git
+        state: present
+
+    - name: Clone repo
+      ansible.builtin.git:
+        repo: 'https://github.com/EliteHacker228/yadro_test'
+        dest: '/tmp/yadro_test_repo'
+        version: 'main'
+        force: yes
+
+    - name: Make build and check script executable
+      become: true
+      ansible.builtin.file:
+        path: /tmp/yadro_test_repo/telecom/script/run_with_check.sh
+        mode: '755'
+
+    - name: Build, run and test
+      ansible.builtin.shell: |
+        newgrp docker <<EOF
+        cd /tmp/yadro_test_repo/telecom/script/ 
+        ./run_with_check.sh
+        EOF
+      register: build_test_result
+      ignore_errors: yes
+
+    - name: Output result of build and test script and handle exit code
+      block:
+      - name: Extract status message from the output
+        ansible.builtin.shell: |
+          echo "{{ build_test_result.stdout }}" | tail -n 1
+        register: last_line
+        changed_when: false 
+
+      - name: Show success message
+        debug:
+          msg: "{{ last_line.stdout }}"
+        when: build_test_result.rc == 0
+
+      - name: Show short failure message
+        fail:
+          msg: "{{ last_line.stdout }}"
+        when: build_test_result.rc != 0
