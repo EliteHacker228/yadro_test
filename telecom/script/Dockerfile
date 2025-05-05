@@ -12,6 +12,4 @@ RUN python3 -m venv .venv && .venv/bin/pip install --no-cache-dir -r requirement
 
 COPY requester.py .
 
-RUN mkdir -p /tmp/requester && touch /tmp/requester/log
-
 CMD ["./.venv/bin/python", "requester.py"]
