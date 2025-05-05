@@ -57,16 +57,16 @@
 
     - name: Clone repo
       ansible.builtin.git:
-        repo: 'https://github.com/EliteHacker228/yadro_test'
-        dest: '/tmp/yadro_test_repo'
-        version: 'main'
+        repo: "https://github.com/EliteHacker228/yadro_test"
+        dest: "/tmp/yadro_test_repo"
+        version: "main"
         force: yes
 
     - name: Make build and check script executable
       become: true
       ansible.builtin.file:
         path: /tmp/yadro_test_repo/telecom/script/run_with_check.sh
-        mode: '755'
+        mode: "755"
 
     - name: Build, run and test
       ansible.builtin.shell: |
