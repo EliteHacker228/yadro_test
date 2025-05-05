@@ -17,8 +17,8 @@ logs=$(docker logs $container_id)
 info_count=$(echo "$logs" | grep -c '\[INFO\]')
 error_count=$(echo "$logs" | grep -c '\[ERROR\]')
 
-echo "INFO lines found: $info_count as expected"
-echo "ERROR lines found: $error_count as expected"
+echo "INFO lines found: $info_count"
+echo "ERROR lines found: $error_count"
 
 if [[ "$info_count" -ne 5 ]]; then
   echo "ERROR: Expected 4 lines with [INFO], but found $info_count. Script failed"
