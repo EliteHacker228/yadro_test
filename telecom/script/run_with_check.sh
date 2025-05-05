@@ -21,12 +21,12 @@ echo "INFO lines found: $info_count"
 echo "ERROR lines found: $error_count"
 
 if [[ "$info_count" -ne 5 ]]; then
-  echo "ERROR: Expected 4 lines with [INFO], but found $info_count. Script failed"
+  echo "ERROR: Expected 5 lines with [INFO], but found $info_count. Script failed"
   exit 1
 fi
 
 if [[ "$error_count" -ne 2 ]]; then
-  echo "ERROR: Expected 3 lines with [ERROR], but found $error_count. Script failed"
+  echo "ERROR: Expected 2 lines with [ERROR], but found $error_count. Script failed"
   exit 1
 fi
 
